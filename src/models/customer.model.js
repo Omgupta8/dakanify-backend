@@ -3,8 +3,7 @@ const Customer = require('../database/models/Customer.js');
 
 const getCustomerByName = async (name) => {
     const customer = await knex('customers').where('name', name).first();
-    if(customer) return customer;
-    else return null;
+    return customer || null;
 };
 
 const createCustomer = async (name, mobile) => {
@@ -15,7 +14,25 @@ const createCustomer = async (name, mobile) => {
     return customer;
 };
 
+const getCustomerById = async (userId) => {
+    // first() return undefined or value
+    // select() returns an array
+    const customer = await knex('customers').where('id', userId).first();
+    return customer || null;
+};
+
+// Example for query builder
+const getCustomers = async (search, sortBy, sortOrder) => {
+    const query = knex('customers');
+    if(search) query.whereILike('name' , `%${search}%`).orWhereILike('mobile', `%${search}%`);
+    query.orderBy(sortBy, sortOrder);
+    await query.select('*');
+    return query;
+};
+
 module.exports = {
     getCustomerByName,
     createCustomer,
+    getCustomerById,
+    getCustomers,
 };

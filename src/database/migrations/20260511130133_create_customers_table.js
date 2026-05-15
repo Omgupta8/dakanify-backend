@@ -4,9 +4,10 @@
  */
 exports.up = async (knex) => {
   await knex.schema.createTable('customers', (table) => {
-    table.increments('id');
+    table.increments('id').primary();
     table.string('name', 100);
     table.string('mobile', 10);
+    table.string('balance', 10).defaultTo('0');
     table.timestamps(true, true);
 
     table.index(['name'], 'idx_name');
@@ -18,8 +19,5 @@ exports.up = async (knex) => {
  * @returns { Promise<void> }
  */
 exports.down = async (knex) => {
-  await knex.schema.table('customers', (table) => {
-    table.dropIndex('idx_name');
-  })
-  .dropTable('customers');
+  await knex.schema.dropTableIfExists('customers');
 };
