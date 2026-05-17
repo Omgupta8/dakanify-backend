@@ -1,8 +1,6 @@
 const customerModel = require('../models/customer.model.js');
 
 const getCustomers = async (search = '', sortBy = 'created_at', sortOrder = 'desc') => {
-    console.log(sortBy, sortOrder);
-    
     const customers = await customerModel.getCustomers(search , sortBy, sortOrder);
     return customers;
 };

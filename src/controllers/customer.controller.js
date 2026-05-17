@@ -34,8 +34,6 @@ const getCustomerProfile = async (req, res, next) => {
     try {
         const { userId } = req.params;
         const result = await customerService.getCustomerProfile(userId);
-        console.log(result);
-        
         return res.status(httpStatus.OK).json({
             status: true,
             result

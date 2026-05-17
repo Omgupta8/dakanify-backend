@@ -8,8 +8,10 @@ exports.up = async (knex) => {
     table.string('name', 100);
     table.string('mobile', 10);
     table.string('balance', 10).defaultTo('0');
+    table.boolean('is_active').defaultTo(true);
     table.timestamps(true, true);
 
+    table.unique('name');
     table.index(['name'], 'idx_name');
   });
 };
