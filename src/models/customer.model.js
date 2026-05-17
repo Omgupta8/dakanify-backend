@@ -14,10 +14,10 @@ const createCustomer = async (name, mobile) => {
     return customer;
 };
 
-const getCustomerById = async (userId) => {
+const getCustomerById = async (customerId) => {
     // first() return undefined or value
     // select() returns an array
-    const customer = await knex('customers').where('id', userId).first();
+    const customer = await knex('customers').where('id', customerId).first();
     return customer || null;
 };
 

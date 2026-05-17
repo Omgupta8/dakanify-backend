@@ -32,8 +32,8 @@ const createCustomer = async (req, res, next) => {
 
 const getCustomerProfile = async (req, res, next) => {
     try {
-        const { userId } = req.params;
-        const result = await customerService.getCustomerProfile(userId);
+        const { customerId } = req.params;
+        const result = await customerService.getCustomerProfile(customerId);
         return res.status(httpStatus.OK).json({
             status: true,
             result

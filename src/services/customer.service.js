@@ -14,8 +14,8 @@ const createCustomer = async (name , mobile = null) => {
     return 'Customer Created';
 };
 
-const getCustomerProfile = async ( userId ) => {
-    const customer = await customerModel.getCustomerById(userId);
+const getCustomerProfile = async ( customerId ) => {
+    const customer = await customerModel.getCustomerById(customerId);
     if(!customer) {
         throw new Error('Customer does not exists');
     }

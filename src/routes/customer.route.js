@@ -9,6 +9,6 @@ router.get('/', validate(customerValidation.getCustomers), customerController.ge
 
 router.post('/', validate(customerValidation.createCustomer) , customerController.createCustomer);
 
-router.get('/:userId', validate(customerValidation.getCustomerProfile), customerController.getCustomerProfile);
+router.get('/:customerId', validate(customerValidation.getCustomerProfile), customerController.getCustomerProfile);
 
 module.exports = router;

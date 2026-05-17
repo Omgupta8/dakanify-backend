@@ -18,7 +18,7 @@ const createCustomer = {
 
 const getCustomerProfile = {
     params: Joi.object({
-        userId: Joi.number().min(1).required(),
+        customerId: Joi.number().min(1).required(),
     }),
 };
 
