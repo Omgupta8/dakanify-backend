@@ -1,4 +1,4 @@
-const { status: httpStatus, default: status } = require('http-status');
+const { status: httpStatus } = require('http-status');
 const inventoryService = require('../services/inventory.service');
 
 const getStocks = async (req, res, next) => {

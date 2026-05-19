@@ -1,28 +1,28 @@
 const Joi = require('joi');
 
 const getStocks = {
-    query: Joi.object({
-        search: Joi.string().allow('',null),
-        sortyBy: Joi.string().valid('item', 'brand', 'weight', 'quantity', 'price'),
+    query: Joi.object().keys({
+        search: Joi.string().trim().allow('',null),
+        sortBy: Joi.string().valid('item', 'brand', 'weight', 'quantity', 'price'),
         sortOrder: Joi.string().valid('asc', 'desc'),
     })
 };
 
 const createStock = {
-    body: Joi.object({
-        item: Joi.string().required(),
-        brand: Joi.string().required(),
-        weight: Joi.string().required(),
+    body: Joi.object().keys({
+        item: Joi.string().trim().required(),
+        brand: Joi.string().trim().required(),
+        weight: Joi.string().trim().required(),
         quantity: Joi.number().integer().required(),
         price: Joi.number().integer().positive().required(),
     })
 };
 
 const updateStock = {
-    params: Joi.object({
-        stockId: Joi.string().required(),
+    params: Joi.object().keys({
+        stockId: Joi.number().integer().positive().required(),
     }),
-    body: Joi.object({
+    body: Joi.object().keys({
         quantity: Joi.number().integer().required(),
         price: Joi.number().integer().required(),
     }),

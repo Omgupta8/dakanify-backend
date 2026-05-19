@@ -76,10 +76,21 @@ const getStockById = async (stockId) => {
 const updateStockById = async (stockId, quantity, price) => {
     const [updatedStock] = await knex('inventory').where('id', stockId).update({
         quantity,
-        price
+        price,
+        updated_at: new Date(),
     }).returning('*');
     return updatedStock;
 };
+
+const reduceStockById = async (stockId, quantity, trx) => {
+    const [stock] = await trx('inventory').where('id', stockId).decrement('quantity', quantity).returning('*');
+    return stock;
+}
+
+const increaseStockById = async (stockId, quantity, trx) => {
+    const [stock] = await trx('inventory').where('id', stockId).increment('quantity', quantity).returning('*');
+    return stock;
+}
 
 module.exports = {
     getEntity,
@@ -90,4 +101,6 @@ module.exports = {
     createStock,
     getStockById,
     updateStockById,
+    reduceStockById,
+    increaseStockById,
 };

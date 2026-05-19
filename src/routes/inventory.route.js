@@ -7,6 +7,7 @@ const router = Router();
 
 router.get('/', validate(inventoryValidation.getStocks), invetoryController.getStocks);
 
+// TO DO: add transaction
 router.post('/', validate(inventoryValidation.createStock), invetoryController.createStock);
 
 router.patch('/:stockId', validate(inventoryValidation.updateStock), invetoryController.updateStock);
