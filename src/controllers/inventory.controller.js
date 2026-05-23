@@ -29,7 +29,7 @@ const getInventoryMetadata = async (req, res, next) => {
         };
         return res.status(httpStatus.OK).json({
             status: true,
-            newResult,
+            result: newResult,
         });
     } catch (err) {
         return res.status(httpStatus.BAD_REQUEST).json({
