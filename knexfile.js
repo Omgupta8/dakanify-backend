@@ -8,7 +8,10 @@ module.exports = {
       port: process.env.PG_DB_PORT,
       database: process.env.PG_DB_NAME,
       user: process.env.PG_DB_USER,
-      password: process.env.PG_DB_PASSWORD
+      password: process.env.PG_DB_PASSWORD,
+      ssl: {
+        rejectUnauthorized: false
+      }
     },
     pool: {
       min: 2,
@@ -29,7 +32,10 @@ module.exports = {
         port: process.env.PG_DB_PORT,
         database: process.env.PG_DB_NAME,
         user: process.env.PG_DB_USER,
-        password: process.env.PG_DB_PASSWORD
+        password: process.env.PG_DB_PASSWORD,
+        ssl: {
+          rejectUnauthorized: false
+        }
       },
       pool: {
         min: 2,

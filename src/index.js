@@ -12,7 +12,7 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
-app.get('/api/ping', (req, res) => res.status(200).send('pong'));
+app.get('/api/health', (req, res) => res.status(200).send('ok'));
 app.use('/api/', routes);
 
 app.listen(config.server.port, ()=> {
