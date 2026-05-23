@@ -48,7 +48,7 @@ const getOrdersByDate = async ( date ) => {
         );
 
     if (!stocks.length) {
-        return null;
+        return [];
     }
     return stocks;
 };
