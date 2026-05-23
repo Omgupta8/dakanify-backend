@@ -22,8 +22,15 @@ const getCustomerProfile = {
     }),
 };
 
+const getCustomerDashboard = {
+    params: Joi.object().keys({
+        customerId: Joi.number().integer().positive().required(),
+    }),
+};
+
 module.exports = {
     getCustomers,
     createCustomer,
     getCustomerProfile,
+    getCustomerDashboard,
 };

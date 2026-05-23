@@ -6,6 +6,7 @@ const getOrders = {
     }),
 };
 
+// TO DO: add validation for no same stock twice
 const createOrder = {
     body: Joi.object().keys({
         orderType: Joi.string().valid('payment_received', 'instant_payment', 'borrowing').required(),

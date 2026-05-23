@@ -50,31 +50,58 @@ const getOrdersByDate = async ( date ) => {
     if (!stocks.length) {
         return null;
     }
-    const order = {
-        orderId: stocks[0].orderId,
-        orderType: stocks[0].orderType,
-        orderDate: stocks[0].orderDate,
-        totalAmount: stocks[0].totalAmount,
-        paymentAmount: stocks[0].paymentAmount,
-        createdAt: stocks[0].createdAt,
-        updatedAt: stocks[0].updatedAt,
-        customer: stocks[0].customerId ? {
-            customerId : stocks[0].customerId,
-            customerName: stocks[0].customerName,
-        } : null,
-        stocks: stocks.map((stock)=> ({
-            orderItemId: stock.orderItemId,
-            stockId: stock.stockId,
-            quantity: stock.quantity,
-            price: stock.price,
-            subtotal: stock.subtotal,
-            itemId: stock.itemId,
-            itemName: stock.itemName,
-            brandId: stock.brandId,
-            brandName: stock.brandName,
-            weightId: stock.weightId,
-            weightName: stock.weightName,
-        })),
+    return stocks;
+};
+
+const getOrdersByCustomer = async (customerId) => {
+    const stocks = await knex('orders')
+        .leftJoin('order_items', 'orders.id', 'order_items.order_id')
+        .leftJoin('inventory', 'order_items.inventory_id', 'inventory.id')
+        .leftJoin('items', 'inventory.item_id', 'items.id')
+        .leftJoin('brands', 'inventory.brand_id', 'brands.id')
+        .leftJoin('weights', 'inventory.weight_id', 'weights.id')
+        .leftJoin('customers', 'orders.customer_id', 'customers.id')
+        .where('orders.customer_id', customerId)
+        .where('orders.is_active', true)
+        .orderBy('orders.order_date', 'desc')
+        .select(
+            // Order
+            'orders.id as orderId',
+            'orders.order_type as orderType',
+            'orders.order_date as orderDate',
+            'orders.total_amount as totalAmount',
+            'orders.payment_amount as paymentAmount',
+            'orders.created_at as createdAt',
+            'orders.updated_at as updatedAt',
+
+            // Customer
+            'customers.id as customerId',
+            'customers.name as customerName',
+
+            // Order Item
+            'order_items.id as orderItemId',
+            'order_items.quantity',
+            'order_items.unit_price as price',
+            'order_items.subtotal',
+
+            // Inventory
+            'inventory.id as stockId',
+
+            // Item
+            'items.id as itemId',
+            'items.name as itemName',
+
+            // Brand
+            'brands.id as brandId',
+            'brands.name as brandName',
+
+            // Weight
+            'weights.id as weightId',
+            'weights.name as weightName',
+        );
+
+    if (!stocks.length) {
+        return null;
     }
     return stocks;
 };
@@ -218,6 +245,7 @@ const deleteOrderById = async (orderId, trx) => {
 
 module.exports = {
     getOrdersByDate,
+    getOrdersByCustomer,
     createPaymentOrder,
     createOrderEntry,
     createOrderItemsEntry,

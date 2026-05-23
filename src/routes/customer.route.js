@@ -11,4 +11,6 @@ router.post('/', validate(customerValidation.createCustomer) , customerControlle
 
 router.get('/:customerId', validate(customerValidation.getCustomerProfile), customerController.getCustomerProfile);
 
+router.get('/:customerId/dashboard', validate(customerValidation.getCustomerDashboard), customerController.getCustomerDashboard);
+
 module.exports = router;

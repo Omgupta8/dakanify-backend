@@ -1,4 +1,4 @@
-const { status: httpStatus } = require('http-status');
+const { status: httpStatus, default: status } = require('http-status');
 const customerService = require('../services/customer.service.js');
 
 const getCustomers = async (req, res, next) => {
@@ -46,8 +46,27 @@ const getCustomerProfile = async (req, res, next) => {
     }
 }
 
+const getCustomerDashboard = async (req, res, next) => {
+    try {
+        const { customerId } = req.params;
+        const customerProfile = await customerService.getCustomerProfile(customerId);
+        const orders = await customerService.getCustomerOrders(customerId);
+        return res.status(httpStatus.OK).json({
+            status: true,
+            customerProfile,
+            orders,
+        });
+    } catch (err) {
+        return res.status(httpStatus.BAD_REQUEST).json({
+            status: false,
+            message: err.message,
+        });
+    }
+};
+
 module.exports = {
     getCustomers,
     createCustomer,
     getCustomerProfile,
+    getCustomerDashboard,
 };

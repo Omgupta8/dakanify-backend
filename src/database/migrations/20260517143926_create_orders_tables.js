@@ -21,6 +21,8 @@ exports.up = async (knex) => {
       table.index('order_type');
       table.index('is_active');
       table.index(['customer_id', 'order_date']);
+      table.index(['customer_id', 'total_amount']);
+      table.index(['customer_id', 'payment_amount']);
     })
     .createTable('order_items', (table) => {
       table.increments('id').primary();
