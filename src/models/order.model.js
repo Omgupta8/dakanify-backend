@@ -101,7 +101,7 @@ const getOrdersByCustomer = async (customerId) => {
         );
 
     if (!stocks.length) {
-        return null;
+        return [];
     }
     return stocks;
 };
