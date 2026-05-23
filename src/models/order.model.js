@@ -76,7 +76,7 @@ const getOrdersByDate = async ( date ) => {
             weightName: stock.weightName,
         })),
     }
-    return order;
+    return stocks;
 };
 
 const createPaymentOrder = async (orderType, orderDate, customerId, paymentAmount) => {

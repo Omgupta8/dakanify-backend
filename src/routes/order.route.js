@@ -5,7 +5,7 @@ const orderController = require('../controllers/order.controller.js');
 
 const router = Router();
 
-// router.get('/', validate(orderValidation.getOrders), orderController.getOrders);
+router.get('/', validate(orderValidation.getOrders), orderController.getOrders);
 
 router.post('/', validate(orderValidation.createOrder), orderController.createOrder);
 

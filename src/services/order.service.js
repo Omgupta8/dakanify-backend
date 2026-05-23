@@ -5,7 +5,78 @@ const inventoryModel = require('../models/inventory.model');
 
 const getOrders = async ( date ) => {
     const orders = await orderModel.getOrdersByDate(date);
-    return orders;
+    const paymentReceived = [];
+    const borrowing = {};
+    const instantPayment = {};
+    for ( const order of orders ) {
+        if (order.orderType === 'payment_received') {
+            paymentReceived.push({
+                orderId: order.orderId,
+                orderType: order.orderType,
+                orderDate: order.orderDate,
+                paymentAmount: order.paymentAmount,
+                customerId: order.customerId,
+                customerName: order.customerName
+            });
+        } else if (order.orderType === 'borrowing') {
+
+            if (!borrowing[order.orderId]) {
+                borrowing[order.orderId] = {
+                    orderId: order.orderId,
+                    orderType: order.orderType,
+                    orderDate: order.orderDate,
+                    totalAmount: order.totalAmount,
+                    customerId: order.customerId,
+                    customerName: order.customerName,
+                    stocks: [],
+                };
+            }
+
+            borrowing[order.orderId].stocks.push({
+                orderItemId: order.orderItemId,
+                quantity: order.quantity,
+                subtotal: order.subtotal,
+                price: order.price,
+                stockId: order.stockId,
+                itemId: order.itemId,
+                itemName: order.itemName,
+                brandId: order.brandId,
+                brandName: order.brandName,
+                weightId: order.weightId,
+                weightName: order.weightName,
+            });
+        } else if (order.orderType === 'instant_payment') {
+            if (!instantPayment[order.orderId]) {
+                instantPayment[order.orderId] = {
+                    orderId: order.orderId,
+                    orderType: order.orderType,
+                    orderDate: order.orderDate,
+                    totalAmount: order.totalAmount,
+                    stocks: [],
+                };
+            }
+            instantPayment[order.orderId].stocks.push({
+                orderItemId: order.orderItemId,
+                quantity: order.quantity,
+                subtotal: order.subtotal,
+                price: order.price,
+                stockId: order.stockId,
+                itemId: order.itemId,
+                itemName: order.itemName,
+                brandId: order.brandId,
+                brandName: order.brandName,
+                weightId: order.weightId,
+                weightName: order.weightName,
+            });
+        } else {
+            throw new Error('Order Type incorrect');
+        }
+    }
+    return {
+        paymentReceived,
+        instantPayment: Object.values(instantPayment),
+        borrowing: Object.values(borrowing)
+    };
 };
 
 const createStockEntry = async (orderType, orderDate, customerId, stocks, trx = knex) => {
