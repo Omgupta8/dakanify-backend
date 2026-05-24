@@ -106,8 +106,8 @@ const getOrdersByCustomer = async (customerId) => {
     return stocks;
 };
 
-const createPaymentOrder = async (orderType, orderDate, customerId, paymentAmount) => {
-    const [order] = await knex('orders').insert({
+const createPaymentOrder = async (orderType, orderDate, customerId, paymentAmount, trx = knex) => {
+    const [order] = await trx('orders').insert({
         order_type: orderType,
         order_date: orderDate,
         customer_id: customerId,

@@ -68,8 +68,8 @@ const createStock = async (itemId, brandId, weightId, quantity, price) => {
     return stock;
 };
 
-const getStockById = async (stockId) => {
-    const stock = await knex('inventory').where('id', stockId).first();
+const getStockById = async (stockId, trx = knex) => {
+    const stock = await trx('inventory').where('id', stockId).first();
     return stock || null;
 };
 

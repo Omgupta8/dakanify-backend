@@ -83,7 +83,7 @@ const createStockEntry = async (orderType, orderDate, customerId, stocks, trx = 
     let totalAmount = 0;
     const stockList = [];
     for (const stock of stocks ) {
-        const existingStock = await inventoryModel.getStockById(stock.stockId);
+        const existingStock = await inventoryModel.getStockById(stock.stockId, trx);
         if(!existingStock) throw new Error('Stock not found');
         if(existingStock.quantity < stock.quantity) throw new Error(`Max Quantity present in [${existingStock.item}, ${existingStock.brand}, ${existingStock.weight}]  is ${existingStock.quantity}.`);
         const subtotal = stock.price * stock.quantity;
@@ -103,14 +103,14 @@ const createStockEntry = async (orderType, orderDate, customerId, stocks, trx = 
 
 // NOTE: reorder orders and dashboard on the basis of order_date and in desc order
 const createPaymentReceivedOrder = async (orderType, orderDate, customerId, paymentAmount, trx = knex) => {
-    const customer = await customerModel.getCustomerById(customerId);
+    const customer = await customerModel.getCustomerById(customerId, trx);
     if(!customer) throw new Error('Customer not found');
     const result = await orderModel.createPaymentOrder(orderType, orderDate, customerId, paymentAmount, trx);
     return result;
 };
 
 const createBorrowingOrder = async (orderType, orderDate, customerId, stocks, trx = knex) => {
-    const customer = await customerModel.getCustomerById(customerId);
+    const customer = await customerModel.getCustomerById(customerId, trx);
     if(!customer) throw new Error('Customer not found');
     const result = await createStockEntry(orderType, orderDate, customerId, stocks, trx);
     return result;
@@ -137,7 +137,6 @@ const createOrder = async (orderType, orderDate, customerId, paymentAmount, stoc
         await trx.rollback();
         throw err;
     }
-    
 };
 
 const updateOrder = async (orderId, orderType, orderDate, customerId, paymentAmount, stocks) => {
@@ -156,10 +155,10 @@ const updateOrder = async (orderId, orderType, orderDate, customerId, paymentAmo
         else if (orderType === 'borrowing') updatedOrder = await createBorrowingOrder(orderType, orderDate, customerId, stocks, trx);
         else if (orderType === 'instant_payment') updatedOrder = await createInstantPaymentOrder(orderType, orderDate, stocks, trx);
         else throw new Error('Invalid Order Type');
-        trx.commit();
+        await trx.commit();
         return updatedOrder;
     } catch (err) {
-        trx.rollback();
+        await trx.rollback();
         throw err;
     }
 };
