@@ -1,4 +1,4 @@
-const { status: httpStatus, default: status } = require('http-status');
+const { status: httpStatus } = require('http-status');
 const customerService = require('../services/customer.service.js');
 
 const getCustomers = async (req, res, next) => {
@@ -34,7 +34,7 @@ const updateCustomer = async (req, res, next) => {
     try{
         const { customerId } = req.params;
         const { name, mobile } = req.body;
-        const result = await customerService.updateCustomer(customerId, name, mobile);
+    const result = await customerService.updateCustomer(customerId, name, mobile);
         return res.status(httpStatus.OK).json({
             status: true,
             result,

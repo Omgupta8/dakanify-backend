@@ -12,7 +12,7 @@ const getCustomers = {
 const createCustomer = {
     body: Joi.object().keys({
         name: Joi.string().trim().min(1).max(100).required(),
-        mobile: Joi.string().length(10),
+        mobile: Joi.string().length(10).allow('', null),
     }).required(),
 };
 
