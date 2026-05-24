@@ -9,6 +9,8 @@ router.get('/', validate(customerValidation.getCustomers), customerController.ge
 
 router.post('/', validate(customerValidation.createCustomer) , customerController.createCustomer);
 
+router.put('/:customerId', validate(customerValidation.updateCustomer), customerController.updateCustomer);
+
 router.get('/:customerId', validate(customerValidation.getCustomerProfile), customerController.getCustomerProfile);
 
 router.get('/:customerId/dashboard', validate(customerValidation.getCustomerDashboard), customerController.getCustomerDashboard);

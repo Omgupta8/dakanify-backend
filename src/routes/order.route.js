@@ -7,6 +7,7 @@ const router = Router();
 
 router.get('/', validate(orderValidation.getOrders), orderController.getOrders);
 
+// TO DO:order date is setting to createdAt date
 router.post('/', validate(orderValidation.createOrder), orderController.createOrder);
 
 router.put('/:orderId', validate(orderValidation.updateOrder), orderController.updateOrder);

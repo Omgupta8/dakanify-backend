@@ -15,6 +15,17 @@ const createCustomer = async (name , mobile = null) => {
     return 'Customer Created';
 };
 
+const updateCustomer = async ( customerId, name, mobile = null ) => {
+    const customer = await customerModel.getCustomerById(customerId);
+    if(!customer) {
+        throw new Error('Customer does not exists');
+    }
+    const newCustomerName = await customerModel.getCustomerByName(name);
+    if(customer.name != name && newCustomerName) throw new Error('Customer name already exists');
+    const updatedCustomer = await customerModel.updateCustomer(customerId, name, mobile);
+    return updatedCustomer;
+};
+
 const getCustomerProfile = async ( customerId ) => {
     const customer = await customerModel.getCustomerById(customerId);
     if(!customer) {
@@ -89,6 +100,7 @@ const getCustomerOrders = async (customerId) => {
 module.exports = { 
     getCustomers,
     createCustomer,
+    updateCustomer,
     getCustomerProfile,
     getCustomerOrders,
 };

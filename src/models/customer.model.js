@@ -21,6 +21,14 @@ const getCustomerById = async (customerId) => {
     return customer || null;
 };
 
+const updateCustomer = async (customerId, name, mobile) => {
+    const [customer] = await knex('customers').where('id', customerId).update({
+        name,
+        mobile,
+    }).returning('*');
+    return customer;
+};
+
 // Example for query builder
 const getCustomers = async (search, sortBy, sortOrder) => {
     const query = knex('customers');
@@ -33,6 +41,7 @@ const getCustomers = async (search, sortBy, sortOrder) => {
 module.exports = {
     getCustomerByName,
     createCustomer,
+    updateCustomer,
     getCustomerById,
     getCustomers,
 };
