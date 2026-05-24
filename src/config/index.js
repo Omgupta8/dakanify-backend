@@ -6,5 +6,8 @@ module.exports = {
     jwt: {
         jwtSecret: process.env.JWT_SECRET,
         jwtExpireTime: process.env.JWT_EXPIRATION_TIME,
+    },
+    cors: {
+        origin: [process.env.CORS_ORIGIN?.split(',')],
     }
 };
