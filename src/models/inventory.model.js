@@ -47,7 +47,7 @@ const getStocks = async (search, sortBy, sortOrder) => {
         ]);
     }
 
-    const result = await query.select('inventory.id', 'items.name as item', 'brands.name as brand', 'weights.name as weight', 'inventory.quantity', 'inventory.price', 'inventory.is_active')
+    const result = await query.select('inventory.id', 'items.name as item', 'brands.name as brand', 'weights.name as weight', 'inventory.quantity', 'inventory.price', 'inventory.is_active', 'inventory.updated_at as updatedAt', 'inventory.created_at as createdAt')
     
     return result;
 };
