@@ -25,6 +25,7 @@ const updateCustomer = async (customerId, name, mobile) => {
     const [customer] = await knex('customers').where('id', customerId).update({
         name,
         mobile,
+        updated_at: knex.fn.now(),
     }).returning('*');
     return customer;
 };
