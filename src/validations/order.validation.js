@@ -15,7 +15,7 @@ const createOrder = {
             then: Joi.required(),
             otherwise: Joi.forbidden(),
         }),
-        paymentAmount: Joi.number().integer().positive().when('orderType', {
+        paymentAmount: Joi.number().precision(2).positive().when('orderType', {
             is: 'payment_received',
             then: Joi.required(),
             otherwise: Joi.forbidden(),
@@ -24,7 +24,7 @@ const createOrder = {
             Joi.object().keys({
                 stockId: Joi.number().integer().positive().required(),
                 quantity: Joi.number().integer().required(),
-                price: Joi.number().integer().required(),
+                price: Joi.number().precision(2).required(),
             }),
         ).min(1).when('orderType', {
             is: Joi.valid('borrowing', 'instant_payment'),
@@ -46,7 +46,7 @@ const updateOrder = {
             then: Joi.required(),
             otherwise: Joi.forbidden(),
         }),
-        paymentAmount: Joi.number().integer().positive().when('orderType', {
+        paymentAmount: Joi.number().precision(2).positive().when('orderType', {
             is: 'payment_received',
             then: Joi.required(),
             otherwise: Joi.forbidden(),
@@ -55,7 +55,7 @@ const updateOrder = {
             Joi.object().keys({
                 stockId: Joi.number().integer().positive().required(),
                 quantity: Joi.number().integer().required(),
-                price: Joi.number().integer().required(),
+                price: Joi.number().precision(2).required(),
             }),
         ).min(1).when('orderType', {
             is: Joi.valid('borrowing', 'instant_payment'),

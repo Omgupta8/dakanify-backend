@@ -14,7 +14,7 @@ const createStock = {
         brand: Joi.string().trim().required(),
         weight: Joi.string().trim().required(),
         quantity: Joi.number().integer().required(),
-        price: Joi.number().integer().positive().required(),
+        price: Joi.number().precision(2).positive().required(),
     })
 };
 
@@ -24,7 +24,7 @@ const updateStock = {
     }),
     body: Joi.object().keys({
         quantity: Joi.number().integer().required(),
-        price: Joi.number().integer().required(),
+        price: Joi.number().precision(2).required(),
     }),
 };
 
