@@ -31,21 +31,6 @@ const createOrder = {
             then: Joi.required(),
             otherwise: Joi.forbidden(),
         }),
-    }).custom((value, helpers) => {
-
-        if(value.stocks?.length) {
-            const stockIds = new Set();
-            for( const stock of value.stocks) {
-                if (stockIds.has(stock.stockId)) {
-                    return helpers.message(
-                        'Duplicate stockId is not allowed'
-                    );
-                }
-                stockIds.add(stock.stockId);
-            }
-        }
-
-        return value;
     }),
 };
 
