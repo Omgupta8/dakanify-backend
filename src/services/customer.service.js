@@ -41,26 +41,28 @@ const getCustomerOrders = async (customerId) => {
     let totalPending = 0, totalPaid = 0, cumulativePending = 0;
     for ( const order of orders ) {
         if (order.orderType === 'payment_received') {
+            const paymentAmount = parseFloat(order.paymentAmount) || 0;
             paymentReceived.push({
                 orderId: order.orderId,
                 orderType: order.orderType,
                 orderDate: order.orderDate,
-                paymentAmount: order.paymentAmount,
+                paymentAmount,
             });
-            totalPaid += order.paymentAmount;
+            totalPaid += paymentAmount;
         } else if (order.orderType === 'borrowing') {
+            const totalAmount = parseFloat(order.totalAmount) || 0;
 
             if (!borrowing[order.orderId]) {
                 borrowing[order.orderId] = {
                     orderId: order.orderId,
                     orderType: order.orderType,
                     orderDate: order.orderDate,
-                    totalAmount: order.totalAmount,
+                    totalAmount,
                     cumulativePending: 0,
                     isPaid: true,
                     stocks: [],
                 };
-                totalPending += order.totalAmount;
+                totalPending += totalAmount;
             }
 
             borrowing[order.orderId].stocks.push({
@@ -85,11 +87,11 @@ const getCustomerOrders = async (customerId) => {
         for( const order of Object.values(borrowing)) {
             if(cumulativePending <= 0) break;
             order.cumulativePending = cumulativePending;
-            order.isPaid = false; 
+            order.isPaid = false;
             cumulativePending = cumulativePending - order.totalAmount;
         }
     }
-    
+
     return {
         paymentReceived,
         borrowing: Object.values(borrowing),
